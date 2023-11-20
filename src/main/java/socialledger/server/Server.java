@@ -82,17 +82,17 @@ public class Server {
         PersonDAO personDAO = ServiceRegistry.lookup(PersonDAO.class);
         ExpenseDAO expenseDAO = ServiceRegistry.lookup(ExpenseDAO.class);
 
-        Person student1 = new Person("student1@wethinkcode.co.za");
-        Person student2 = new Person("student2@wethinkcode.co.za");
-        Person student3 = new Person("student3@wethinkcode.co.za");
-        Stream.of(student1, student2, student3).forEach(personDAO::savePerson);
+        Person ndamulelo = new Person("ndamulelo@gmail.com");
+        Person wilson = new Person("wilson2@gmail.com");
+        Person palima = new Person("palima@gmail.com");
+        Stream.of(ndamulelo, wilson, palima).forEach(personDAO::savePerson);
 
-        Expense expense1 = new Expense(student1, "Lunch", amountOf(300), TODAY);
-        expense1.requestPayment(student2, amountOf(100), TOMORROW);
-        expense1.requestPayment(student3, amountOf(100), TOMORROW);
-        Expense expense2 = new Expense(student1, "Airtime", amountOf(100), TODAY);
-        Expense expense3 = new Expense(student2, "Movies", amountOf(150), TODAY.minusWeeks(1));
-        Expense expense4 = new Expense(student3, "Ice cream", amountOf(50), TODAY.minusDays(3));
+        Expense expense1 = new Expense(ndamulelo, "Lunch", amountOf(300), TODAY);
+        expense1.requestPayment(wilson, amountOf(100), TOMORROW);
+        expense1.requestPayment(palima, amountOf(100), TOMORROW);
+        Expense expense2 = new Expense(ndamulelo, "Airtime", amountOf(100), TODAY);
+        Expense expense3 = new Expense(wilson, "Movies", amountOf(150), TODAY.minusWeeks(1));
+        Expense expense4 = new Expense(palima, "Ice cream", amountOf(50), TODAY.minusDays(3));
         Stream.of(expense1, expense2, expense3, expense4).forEach(expenseDAO::save);
     }
 
