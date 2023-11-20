@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout.html}">
+<head></head>
+<body>
+<div layout:fragment="contents">
+    <section class="expenseList">
+        <h2>People that owe me</h2>
+        <p th:id="no_payment_requests_sent"  th:if="${#lists.isEmpty(paymentRequests)}">Nobody owes you anything!</p>
+
+        <div th:unless="${#lists.isEmpty(paymentRequests)}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Who</th>
+                    <th>What</th>
+                    <th>Due In(days)</th>
+                    <th>How Much</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="paymentRequest: ${paymentRequests}">
+                  <tr>
+                      <td><span th:text="${paymentRequest.getPersonWhoShouldPayBack.getName}">student 2</span></td>
+                      <td><span th:text="${paymentRequest.getExpense.getDescription}">Dinner</span></td>
+                      <td><span th:text="${paymentRequest.daysLeftToPay}">1</span></td>
+                      <td><span th:text="${paymentRequest.getAmountToPay}">1</span></td>
+                  </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <table>
+                <hr>
+                <tr>
+                    <td>Total Unpaid</td>
+                    <td></td>
+                    <td></td>
+                    <td th:id="grand_total" th:text="${grandTotal}">ZAR 0.00</td>
+                </tr>
+            </table>
+        </div>
+  </section>
+</div>
+</body>
+
+</html>

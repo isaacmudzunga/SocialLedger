@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout.html}">
+<head></head>
+<body>
+<div layout:fragment="contents">
+    <section class="expenseList">
+        <h2>Submit a payment request for the following expense</h2>
+        <table>
+            <tbody>
+            <tr>
+                <td colspan="2">Date</td>
+                <td th:id="expense_date"><span th:text="${expense.date}">05/09/2022</span></td>
+            </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+            <tr>
+                <td colspan="2">Description</td>
+                <td th:id="expense_description">
+                    <span th:text="${expense.description}">Lunch</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table>
+            <tr>
+                <td colspan="2">Amount</td>
+                <td th:id="expense_amount"><span th:text="${expense.amount}">Amount</span></td>
+            </tr>
+        </table>
+
+        <div th:unless="${#lists.isEmpty(expense.listOfPaymentRequests)}">
+            <h2>Previous Payment Requests for this expense</h2>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Who</th>
+                    <th>Due</th>
+                    <th>Paid?</th>
+                    <th>How Much</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="request: ${expense.listOfPaymentRequests}">
+                    <tr>
+                        <td><span th:id="'paymentrequest_who_' + ${request.getId}" th:text="${request.personWhoShouldPayBack.getName}">student 2</span></td>
+                        <td><span th:id="'paymentrequest_date_' + ${request.getId}" th:text="${request.dueDate}"></span></td>
+                        <td>
+                            <span th:id="'paymentrequest_paid_' + ${request.getId}" th:text="${request.isPaid} ? 'Yes' : 'No'"></span>
+                        </td>
+
+                        <td><span th:id="'paymentrequest_amount_' + ${request.getId}" th:text="${request.amountToPay}">1</span></td>
+
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <table>
+                <hr>
+                <tr>
+                    <td>Total Unpaid</td>
+                    <td></td>
+                    <td></td>
+                    <td th:id="total_paymentrequest" th:text="${expense.totalAmountOfPaymentsRequested}">ZAR 0.00</td>
+                </tr>
+            </table>
+        </div>
+
+        <form method="post" action="/paymentrequest.action" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="expense_id" th:value="${expense.id}">
+
+            <label th:for="email">The email address of a person that should pay you</label>
+            <input name="email" th:id="email" type="text" autofocus required>
+
+            <label th:for="amount">The amount they should pay(maximum <span th:text="${expense.amount}"></span>)</label>
+            <input name="amount" th:id="amount" type="number" autofocus required>
+
+            <label th:for="due_date">Date(dd/mm/yyyy)</label>
+            <input name="date" th:id="due_date" type="text" pattern="\d{2}/\d{2}/\d{4}" autofocus required>
+
+            <input id="submit" type="submit" value="Submit"/>
+        </form>
+    </section>
+</div>
+</body>
+
+</html>

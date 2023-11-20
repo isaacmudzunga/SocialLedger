@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout.html}">
+<head></head>
+<body>
+<div layout:fragment="contents">
+    <section class="expenseList">
+        <h2>My Expenses</h2>
+        <a th:id="add_expense" href="/newexpense">Add a new expense</a>
+        <p th:id="no_expenses" th:if="${grandTotal} == ${zeroTotal}">You don't have any expenses!</p>
+
+        <div th:unless="${#lists.isEmpty(expenses)}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>What</th>
+                    <th>Amount Spent</th>
+                    <th>Payments Requested</th>
+                    <th>Payments Received</th>
+                    <th>Nett Expense</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="expense: ${expenses}">
+                    <tr>
+                        <td th:id="'date_'+${expense.id}" th:text="${expense.date}"></td>
+                        <td>
+                            <a th:id="'payment_request_'+${expense.id}"
+                               th:text="${expense.description}"
+                               th:href="@{'/paymentrequest?expenseId='+${expense.id}}"
+                            ></a>
+                        </td>
+                        <td th:id="'amount_'+${expense.id}" th:text="${expense.amount}"></td>
+                        <td th:id="'request_'+${expense.id}" th:text="${expense.totalAmountOfPaymentsRequested}"></td>
+                        <td th:id="'received_'+${expense.id}" th:text="${expense.totalAmountForPaymentsReceived}"></td>
+                        <td th:id="'nett_'+${expense.id}" th:text="${expense.amountLessPaymentsReceived}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <table>
+                <tr>
+                    <hr>
+                    <td colspan="5">Total Expenses</td>
+                    <td th:id="grand_total" th:text="${grandTotal}"></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</div>
+</body>
+
+</html>
