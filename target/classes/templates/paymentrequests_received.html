@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout.html}">
+<head></head>
+<body>
+<div layout:fragment="contents">
+    <section class="expenseList">
+        <h2>People that you owe</h2>
+        <p th:id="no_payment_requests_received" th:if="${#lists.isEmpty(requestsReceived)}">You don't owe anyone anything!</p>
+
+        <div th:unless="${#lists.isEmpty(requestsReceived)}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Who</th>
+                    <th>What</th>
+                    <th>Due In(days)</th>
+                    <th>How Much</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="request, iterator: ${requestsReceived}">
+                    <tr>
+                        <td><span th:text="${request.getPersonRequestingPayment.getName}">student 2</span></td>
+                        <td><span th:text="${request.getDescription}">Dinner</span></td>
+                        <td><span th:text="${request.daysLeftToPay}">No</span></td>
+                        <td><span th:text="${request.getAmountToPay}">1</span></td>
+                        <td>
+                            <input th:id="'paid_'+${iterator.index+1}" th:if="${request.isPaid}" type="checkbox" disabled="disabled" checked="checked">
+                            <form th:unless="${request.isPaid}" method="post" action="/payment.action" id="pay_form">
+                                <input type="hidden" id="request_id" name="request_id" th:value="${request.getId}">
+                                <input type="submit" id="pay" value="Pay">
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <table>
+                <hr>
+                <tr>
+                    <td>Total Unpaid</td>
+                    <td></td>
+                    <td></td>
+                    <td th:id="grand_total" th:text="${grandTotal}">ZAR 0.00</td>
+                </tr>
+            </table>
+        </div>
+
+    </section>
+</div>
+</body>
+
+</html>
