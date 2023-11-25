@@ -1,8 +1,5 @@
 package socialledger.persistence.collectionbased;
 
-
-
-
 import socialledger.model.Person;
 import socialledger.persistence.PersonDAO;
 
@@ -29,7 +26,16 @@ public class PersonDAOImpl implements PersonDAO {
 
     @Override
     public Person savePerson(Person person) {
-        if (findPersonByEmail(person.getEmail()).isEmpty()) setOfPeople.add(person);
+        Optional<Person> existingPerson = findPersonByEmail(person.getEmail());
+        if (existingPerson.isEmpty() || !existingPerson.get().getPassword().equals(person.getPassword())) {
+            setOfPeople.add(person);
+        }
         return person;
+    }
+
+    @Override
+    public boolean validatePerson(String email, String password) {
+        Optional<Person> person = findPersonByEmail(email);
+        return person.isPresent() && person.get().getPassword().equals(password);
     }
 }

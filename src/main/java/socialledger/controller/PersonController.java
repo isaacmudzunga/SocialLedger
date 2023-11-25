@@ -22,7 +22,11 @@ public class PersonController {
                 .check(Objects::nonNull, "Email is required")
                 .get();
 
-        Person person = personDAO.savePerson(new Person(email));
+        String password = context.formParamAsClass("password", String.class)
+                .check(Objects::nonNull, "Password is required")
+                .get();
+
+        Person person = personDAO.savePerson(new Person(email, password));
         context.sessionAttribute(Server.SESSION_USER_KEY, person);
         context.redirect(Routes.EXPENSES);
     };

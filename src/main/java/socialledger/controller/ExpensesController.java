@@ -138,7 +138,8 @@ public class ExpensesController {
         try {
             personWhoShouldPayBack = personDAO.findPersonByEmail(email).get();
         } catch (Exception e) {
-            personWhoShouldPayBack = new Person(email);
+            String defaultPassword = "defaultPassword";
+            personWhoShouldPayBack = new Person(email, defaultPassword);
             personDAO.savePerson(personWhoShouldPayBack);
         }
 

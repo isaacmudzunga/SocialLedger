@@ -61,7 +61,7 @@ public class Server {
     public static void main(String[] args) {
         Server server = new Server();
         seedDemoData();
-        server.start(5050);
+        server.start(5051);
     }
 
     @Nullable
@@ -82,9 +82,9 @@ public class Server {
         PersonDAO personDAO = ServiceRegistry.lookup(PersonDAO.class);
         ExpenseDAO expenseDAO = ServiceRegistry.lookup(ExpenseDAO.class);
 
-        Person ndamulelo = new Person("ndamulelo@gmail.com");
-        Person wilson = new Person("wilson2@gmail.com");
-        Person palima = new Person("palima@gmail.com");
+        Person ndamulelo = new Person("ndamulelo@gmail.com", "ndamu12");
+        Person wilson = new Person("wilson2@gmail.com", "wil12");
+        Person palima = new Person("palima@gmail.com", "pal12");
         Stream.of(ndamulelo, wilson, palima).forEach(personDAO::savePerson);
 
         Expense expense1 = new Expense(ndamulelo, "Lunch", amountOf(300), TODAY);

@@ -10,10 +10,12 @@ import org.apache.commons.validator.routines.EmailValidator;
 public class Person {
 
     private final String email;
+    private final String password;
 
-    public Person(String email) {
+    public Person(String email, String password) {
         if (!EmailValidator.getInstance().isValid(email)) throw new SocialLedgerException("Bad email address");
         this.email = email;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -23,6 +25,11 @@ public class Person {
     public String getName() {
         String pseudonym = this.email.split("@")[0];
         return pseudonym.substring(0, 1).toUpperCase() + pseudonym.substring(1);
+    }
+
+    public String getPassword()
+    {
+        return password;
     }
 
     @Override
